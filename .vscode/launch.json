@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug on FuS Board",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "bin/${config:FUS.APP_NAME}",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "targetArchitecture": "${config:FUS.BOARD_ARCH}",
+            "preLaunchTask": "fus_debug-on-board",
+            "externalConsole":false,
+            "MIMode": "${config:FUS.MIMODE}",
+            "miDebuggerPath": "${config:FUS.DEBUGGER_PATH}",
+            "miDebuggerArgs":"${config:FUS.DEBUGGER_ARGS}",
+            "miDebuggerServerAddress": "${config:FUS.BOARD_IP}:${config:FUS.DEBUG_PORT}",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "stopAtEntry": true,
+        },
+    ]
+}
