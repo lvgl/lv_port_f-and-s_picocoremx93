@@ -23,7 +23,7 @@ You can purchase the PicoCoreMX93 starter kit from https://fs-net.de/en/embedded
 
 -->
 
-fbdev single-buffered partial, no OS
+fbdev single-buffered partial, no OS, 32 bit color depth
 
 | Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
 | :------------------------ | -------: | -------: | --------: | ----------: | ---------: |
@@ -49,7 +49,6 @@ fbdev single-buffered partial, no OS
 
 ### CPU and Memory
 - **CPU:** NXP i.MX 93 (1.7 GHz dual-core ARM Cortex-A55)
-- **MCU:** NXP i.MX 93 (1.7 GHz dual-core ARM Cortex-A55)
 - **RAM:** 2GB LPDDR4
 - **Flash:** 64GB eMMC
 - **GPU:** PXP
