@@ -47,6 +47,7 @@
         {
             // Deploys a new build to your FuS board, starts Debugger
             "label": "fus_debug-on-board",
+            "hide": true,
             "type": "shell",
             "dependsOn": "fus_deploy-to-board",
             "command": [

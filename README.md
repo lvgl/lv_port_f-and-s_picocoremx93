@@ -15,13 +15,35 @@ You can purchase the PicoCoreMX93 starter kit from https://fs-net.de/en/embedded
 
 ## Benchmark
 
-<!-- Describe the default buffering and other configuration.
+<!--
 
 <a href="https://www.youtube.com/watch?v=XXXXXXXXXXXXXXXXXXXXXXX">
     <img src="https://github.com/user-attachments/assets/87c1f2e5-0260-4772-b711-13fdab467474" width="75%">
 </a>
 
-The table(s) with the benchmark result -->
+-->
+
+fbdev single-buffered partial, no OS
+
+| Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
+| :------------------------ | -------: | -------: | --------: | ----------: | ---------: |
+| Empty screen              | 3%       | 26       | 0         | 0           | 0          |
+| Moving wallpaper          | 7%       | 30       | 1         | 1           | 0          |
+| Single rectangle          | 0%       | 29       | 0         | 0           | 0          |
+| Multiple rectangles       | 1%       | 30       | 0         | 0           | 0          |
+| Multiple RGB images       | 1%       | 29       | 0         | 0           | 0          |
+| Multiple ARGB images      | 3%       | 30       | 1         | 1           | 0          |
+| Rotated ARGB images       | 9%       | 29       | 2         | 2           | 0          |
+| Multiple labels           | 6%       | 29       | 1         | 1           | 0          |
+| Screen sized text         | 33%      | 30       | 10        | 10          | 0          |
+| Multiple arcs             | 13%      | 29       | 2         | 2           | 0          |
+| Containers                | 3%       | 29       | 0         | 0           | 0          |
+| Containers with overlay   | 26%      | 29       | 8         | 8           | 0          |
+| Containers with opa       | 7%       | 29       | 1         | 1           | 0          |
+| Containers with opa_layer | 6%       | 29       | 2         | 2           | 0          |
+| Containers with scrolling | 17%      | 29       | 4         | 4           | 0          |
+| Widgets demo              | 26%      | 29       | 6         | 6           | 0          |
+| All scenes avg.           | 10%      | 29       | 2         | 2           | 0          |
 
 ## Specification
 
@@ -75,6 +97,19 @@ With the above supplies and the contents of the evaluation kti:
 
 ### Software setup
 
+There are releases with build artifacts maintained in this repo on GitHub.
+You can skip building everything with Yocto and simply download the release
+artifacts where were created ahead of time and can be reproduced.
+
+The artifacts in the release are:
+
+- emmc-fsimx93.sysimg: the OS image
+- sdk-fsimx93-Y2025.02-pre.tar.gz: the SDK for cross-compiling applications
+- lvglsim: the benchmark app which can be copied to the board and run
+
+The following explains how to build everything with Yocto. See below when
+these release artifacts apply and how to use them.
+
 The main software support for this SoM is a Yocto Linux build and
 application cross compiling with the SDK/toolchain exported by Yocto.
 Building Linux images and development tools with Yocto takes a long time
@@ -92,21 +127,30 @@ remain in your main shell.
 ```shell
 mkdir fands_picocoremx93
 cd fands_picocoremx93
-git clone -b fsimx93-Y2025.02-pre https://github.com/FSEmbedded/releases-fus.git
+git clone -b fsimx93-Y2025.02-pre-fixes https://github.com/lvgl/lv_f-and-s_releases-fus.git
 cd releases-fus
 ./setup-yocto ../yocto-fus
 # needed to work around an issue building one of the Yocto packages in Docker
 echo 'DOCKER_PARAMS="--security-opt seccomp=unconfined"' > .docker_params
 ./setup-yocto ../yocto-fus --docker
 # (you are inside a docker container now)
+cd yocto-fus
 MACHINE=fsimx93 DISTRO=fus-imx-wayland source fus-setup-release.sh
+# include gdbserver in the image for debugging
+echo 'EXTRA_IMAGE_FEATURES:append = " tools-debug"' >> conf/local.conf
 # this will start the several hour long build of the Linux image and SDK.
-bitbake fus-image-std -c populate_sdk
+bitbake fus-image-std && bitbake fus-image-std -c populate_sdk
 ```
+
+https://github.com/lvgl/lv_f-and-s_releases-fus.git is used above. It's a fork of
+https://github.com/FSEmbedded/releases-fus.git that includes fixes.
+At the time of writing, the branch `fsimx93-Y2025.02-pre-fixes` which is checked out in
+the steps above is based on the tag ``fsimx93-Y2025.02-pre` tag from the upstream
+and fixes something in `fs-release-manifest.xml`.
 
 Once this process has completed, you will have an OS image for your kit.
 There is already one pre-installed on the board when you receive it, however, it's best
-to install this one so your SDK which you will build LVGL with have
+to install this one so your SDK which you will build LVGL with will have
 maximum compatibility with the OS image.
 
 There are many custom ways to flash the image to the board which are documented
@@ -125,15 +169,25 @@ can then flash with Etcher (or similar) like it's an SD Card.
 6. Use Etcher or any other method like `dd` (which can take longer) to write the built
    Yocto image to the exposed block device. The image is located at
    `fands_picocoremx93/yocto-fus/yocto-fus/build-fsimx93-fus-imx-wayland/tmp/deploy/images/fsimx93/emmc-fsimx93.sysimg`.
+   You may also use emmc-fsimx93.sysimg which is a release artifact of this repo on GitHub.
 
 You must "install" the SDK built by Yocto to begin cross-compiling LVGL for the board.
 There is an install script for the SDK generated at
-`fands_picocoremx93/yocto-fus/yocto-fus/build-fsimx93-fus-imx-wayland/tmp/deploy/fus-imx-wayland-glibc-x86_64-fus-image-std-cortexa55-fsimx93-toolchain-5.0.sh`.
+`fands_picocoremx93/yocto-fus/yocto-fus/build-fsimx93-fus-imx-wayland/tmp/deploy/sdk/fus-imx-wayland-glibc-x86_64-fus-image-std-cortexa55-fsimx93-toolchain-5.0.sh`.
 Docker was used for the Yocto build, but you may install this SDK in your main filesystem
 outside of Docker since it will be confined to one directory. Simply execute the install script
 `./fus-imx-wayland-glibc-x86_64-fus-image-std-cortexa55-fsimx93-toolchain-5.0.sh`
-and optionally override
-the default install location. To uninstall it later, simply delete the install directory.
+and optionally override the default install location (`/opt/fus-imx-wayland`).
+
+You can also use the SDK release artifact of this repo on GitHub called sdk-fsimx93-Y2025.02-pre.tar.gz.
+Extract it to `/opt` with the following command. In `/opt` you will have `fus-imx-wayland`.
+
+```shell
+cd /opt
+tar -xf /path/to/sdk-fsimx93-Y2025.02-pre.tar.gz
+```
+
+To uninstall it later, simply delete the install directory (`fus-imx-wayland`).
 
 ### Run the project
 
@@ -167,15 +221,22 @@ Press ctrl+shift+p and choose "Tasks: Run Task". The tasks do the following
 - "build" - Runs CMake and builds the app
 - "fus_deploy-to-board" - builds the app and uploads it to `/tmp/lvglsim` on the board
 - "fus_launch-on-board" - builds the app, uploads it, and runs it
-- "fus_debug-on-board" - builds the app, uploads it, and starts debugging it interactively
-  in VS Code.
+
+If you cannot proceed during deploy/launch/debug due to
+`WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!`, one solution is to delete `~/.ssh/known_hosts`.
+I.e., `rm ~/.ssh/known_hosts`.
+
+There is also a pre-built `lvglsim` binary in the release artifacts of this repo on GitHub. You
+can upload that to the board and run it directly.
 
 ### Debugging
 
 Interactively debug with VS Code with the "Debug on FuS Board" option
-in the debug pane or press ctrl+shift+p, choose "Tasks: Run Task",
-and "fus_debug-on-board". Ensure `"BOARD_IP"` is correctly set in
+in the debug pane. Ensure `"BOARD_IP"` is correctly set in
 `.vscode/settings.json`.
+
+If you see "Errors exist after running preLaunchTask 'fus_debug-on-board'.",
+simply click "Debug Anyways".
 
 ## Notes
 

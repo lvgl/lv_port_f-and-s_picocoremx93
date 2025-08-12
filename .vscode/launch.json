@@ -5,7 +5,7 @@
             "name": "Debug on FuS Board",
             "type": "cppdbg",
             "request": "launch",
-            "program": "bin/${config:FUS.APP_NAME}",
+            "program": "build/bin/${config:FUS.APP_NAME}",
             "args": [],
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -13,8 +13,9 @@
             "preLaunchTask": "fus_debug-on-board",
             "externalConsole":false,
             "MIMode": "${config:FUS.MIMODE}",
-            "miDebuggerPath": "${config:FUS.DEBUGGER_PATH}",
-            "miDebuggerArgs":"${config:FUS.DEBUGGER_ARGS}",
+            "miDebuggerPath": "${workspaceFolder}/.vscode/gdb_with_sdk.sh",
+            // pass the path to the env setup script as the last argument to the gdb launch script
+            "miDebuggerArgs":"${config:FUS.DEBUGGER_ARGS} ${config:FUS.SDK_SETUP_SCRIPT}",
             "miDebuggerServerAddress": "${config:FUS.BOARD_IP}:${config:FUS.DEBUG_PORT}",
             "setupCommands": [
                 {
