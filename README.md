@@ -122,7 +122,7 @@ remain in your main shell.
 ```shell
 mkdir fands_picocoremx93
 cd fands_picocoremx93
-git clone -b fsimx93-Y2025.02-pre-fixes https://github.com/lvgl/lv_f-and-s_releases-fus.git
+git clone -b fsimx93-Y2025.02-pre-fixes https://github.com/lvgl/lv_f-and-s_releases-fus.git releases-fus
 cd releases-fus
 ./setup-yocto ../yocto-fus
 # needed to work around an issue building one of the Yocto packages in Docker
@@ -140,7 +140,7 @@ bitbake fus-image-std && bitbake fus-image-std -c populate_sdk
 https://github.com/lvgl/lv_f-and-s_releases-fus.git is used above. It's a fork of
 https://github.com/FSEmbedded/releases-fus.git that includes fixes.
 At the time of writing, the branch `fsimx93-Y2025.02-pre-fixes` which is checked out in
-the steps above is based on the tag ``fsimx93-Y2025.02-pre` tag from the upstream
+the steps above is based on the tag `fsimx93-Y2025.02-pre` tag from the upstream
 and fixes something in `fs-release-manifest.xml`.
 
 Once this process has completed, you will have an OS image for your kit.
