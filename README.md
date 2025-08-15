@@ -15,15 +15,11 @@ You can purchase the PicoCoreMX93 starter kit from https://fs-net.de/en/embedded
 
 ## Benchmark
 
-<!--
+fbdev single-buffered partial, no OS, 32 bit color depth.
 
-<a href="https://www.youtube.com/watch?v=XXXXXXXXXXXXXXXXXXXXXXX">
-    <img src="https://github.com/user-attachments/assets/87c1f2e5-0260-4772-b711-13fdab467474" width="75%">
+<a href="https://www.youtube.com/watch?v=F2lOlv2X46E">
+    <img src="https://github.com/user-attachments/assets/3d3b4727-e6f3-4a37-83bb-9e9b892d984f" width="75%">
 </a>
-
--->
-
-fbdev single-buffered partial, no OS, 32 bit color depth
 
 | Name                      | Avg. CPU | Avg. FPS | Avg. time | render time | flush time |
 | :------------------------ | -------: | -------: | --------: | ----------: | ---------: |

@@ -24,7 +24,7 @@
     "logos": [
         "https://raw.githubusercontent.com/lvgl/project-creator/master/meta/images/f_and_s/logo.svg"
     ],
-    "image": "https://raw.githubusercontent.com/lvgl/lv_port_f-and-s_picocoremx93/master/board_images/f-and-s-picocoremx93.webp",
+    "image": "https://raw.githubusercontent.com/lvgl/lv_port_f-and-s_picocoremx93/master/board_images/FS-PicoCore-MX93.png",
     "buy_now_links": [
         "https://www.fs-net.de/en/embedded-modules/computer-on-module-picocore/picocoremx93-with-nxp-imx93-cpu"
     ],
