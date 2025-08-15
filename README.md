@@ -140,20 +140,20 @@ bitbake fus-image-std && bitbake fus-image-std -c populate_sdk
 https://github.com/lvgl/lv_f-and-s_releases-fus.git is used above. It's a fork of
 https://github.com/FSEmbedded/releases-fus.git that includes fixes.
 At the time of writing, the branch `fsimx93-Y2025.02-pre-fixes` which is checked out in
-the steps above is based on the tag `fsimx93-Y2025.02-pre` tag from the upstream
+the steps above is based on the tag `fsimx93-Y2025.02-pre` from the upstream
 and fixes something in `fs-release-manifest.xml`.
 
 Once this process has completed, you will have an OS image for your kit.
-There is already one pre-installed on the board when you receive it, however, it's best
+There is already one pre-installed on the board when you receive it; however, it's best
 to install this one so your SDK which you will build LVGL with will have
 maximum compatibility with the OS image.
 
 There are many custom ways to flash the image to the board which are documented
-extensively in the F&S doc PDFs. The most understandable method is to use the board's
+extensively in the [F&S doc PDFs](#notes). The most beginner-friendly method is to use the board's
 bootloader to expose the MMC as a USB mass storage device to your PC which you
 can then flash with Etcher (or similar) like it's an SD Card.
 
-1. Connect the included USB-C cable to the boards USB-C port and your PC.
+1. Connect the included USB-C cable to the board's USB-C port and your PC.
 2. Power up the board with the serial terminal open. The baud rate is 115200.
 3. Interrupt the boot process by pressing a key before the 3-second boot countdown
    ends to enter the U-Boot prompt.
@@ -208,7 +208,7 @@ Edit `.vscode/settings.json`
 - `"SDK_SETUP_SCRIPT"` - the path to the Yocto SDK you installed earlier.
 
 ```shell
-git clone https://github.com/lvgl/lv_port_f-and-s_picocoremx93.git
+git clone --recursive https://github.com/lvgl/lv_port_f-and-s_picocoremx93.git
 ```
 
 Press ctrl+shift+p and choose "Tasks: Run Task". The tasks do the following
