@@ -1,8 +1,8 @@
-# LVGL ported to F&S picocoremx93
+# LVGL ported to F&S PicoCore™MX93
 
 ## Overview
 
-The F&S picocoremx93 is a highly capable dual core compact SoM MPU
+The F&S PicoCore™MX93 is a highly capable dual core compact SoM MPU
 (System-on-Module) which exposes abundant IO through its
 board-to-board mezzanine connectors. The processor is a dual-core 64-bit ARM Cortex-A55.
 The evaluation kit comes with a 1024x600 capacitive touch display
@@ -11,7 +11,7 @@ some common interfaces like USB, Ethernet, serial, GPIO, SD Card, and more.
 
 ## Buy
 
-You can purchase the PicoCoreMX93 starter kit from https://fs-net.de/en/embedded-modules/computer-on-module-picocore/picocoremx93-with-nxp-imx93-cpu/starterkit-picocoremx93-linux/
+You can purchase the PicoCore™MX93 starter kit from https://fs-net.de/en/embedded-modules/computer-on-module-picocore/picocoremx93-with-nxp-imx93-cpu/starterkit-picocoremx93-linux/
 
 ## Benchmark
 
@@ -201,15 +201,17 @@ Stop the wayland compositor with the following command so the display is free to
 systemctl stop weston
 ```
 
+```shell
+git clone --recursive https://github.com/lvgl/lv_port_f-and-s_picocoremx93.git
+```
+
+Open the folder in VS Code.
+
 Edit `.vscode/settings.json`
 
 - `"BOARD_IP"` - the local IP address of the board on your network
   so you can deploy, run, and debug remotely within VS Code.
 - `"SDK_SETUP_SCRIPT"` - the path to the Yocto SDK you installed earlier.
-
-```shell
-git clone --recursive https://github.com/lvgl/lv_port_f-and-s_picocoremx93.git
-```
 
 Press ctrl+shift+p and choose "Tasks: Run Task". The tasks do the following
 
